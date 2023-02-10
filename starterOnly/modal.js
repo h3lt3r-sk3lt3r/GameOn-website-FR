@@ -41,6 +41,16 @@ modalCloseBtn[0].addEventListener("click", () => {
   modalbg.style.display = "none";
 });
 
+const errorSums = {
+  "errorFirst": 0,
+  "errorLast": 0,
+  "errorMail": 0,
+  "errorBirth": 0,
+  "errorParticipations": 0,
+  "errorCities": 0,
+  "errorCheck": 0
+}
+
 // Error messages Object
 const errors = {
   invalidFirst: "Le prénom ne doit comporter que des lettres ou des tirets.",
@@ -82,95 +92,74 @@ inputs.forEach((input) => {
   });
 });
 
+function checking(errorType, textContent, classType, className) {
+  errorType.textContent = textContent;
+  classType.className = className;
+  //errorCount = error;
+}
+
 // Checking firstname input
-function checkErrorFirst(textContent, className, firstError) {
-  errorFirstName.textContent = textContent;
-  first.className = className;
-  errorFirst = firstError;
-}
-
-let errorFirst = 0;
-
 function checkFirstname() {
+  const errorFirstName = document.getElementById("errorFirstName");
   if (!rules.name(first.value) && first.value !== "") {
-    const errorFirstName = document.getElementById("errorFirstName");
-    checkErrorFirst(errors.invalidFirst, "text-control error-border", 1);
+    checking(errorFirstName, errors.invalidFirst, first, "text-control error-border");
+    errorSums["errorFirst"] = 1;
   } else if (!rules.minChart(first.value)) {
-    checkErrorFirst(errors.minFirstLetters, "text-control error-border", 1);
+    checking(errorFirstName, errors.minFirstLetters, first, "text-control error-border");
+    errorSums["errorFirst"] = 1;
   } else {
-    checkErrorFirst("", "text-control", 0);
+    checking(errorFirstName, "", first, "text-control");
+    errorSums["errorFirst"] = 0;
   }
 };
 
-// Checking lastname input
-function checkErrorLast(textContent, className, lastError) {
-  errorLastName.textContent = textContent;
-  last.className = className;
-  errorLast = lastError;
-}
-
-let errorLast = 0;
-
+// Checking Lastname input
 function checkLastname() {
+  const errorLastName = document.getElementById("errorLastName");
   if (!rules.name(last.value) && last.value !== "") {
-    const errorLastName = document.getElementById("errorLastName");
-    checkErrorLast(errors.invalidLast, "text-control error-border", 1);
+    checking(errorLastName, errors.invalidLast, last, "text-control error-border");
+    errorSums["errorLast"] = 1;
   } else if (!rules.minChart(last.value)) {
-    checkErrorLast(errors.minLastLetters, "text-control error-border", 1);
+    checking(errorLastName, errors.minLastLetters, last, "text-control error-border");
+    errorSums["errorLast"] = 1;
   } else {
-    checkErrorLast("", "text-control", 0);
+    checking(errorLastName, "", last, "text-control");
+    errorSums["errorLast"] = 0;
   }
 };
 
-// Checking email input
-function checkErrorMail(textContent, className, mailError) {
-  errorEmail.textContent = textContent;
-  email.className = className;
-  errorMail = mailError;
-}
-
-let errorMail = 0;
-
+// Checking Email input
 function checkMail() {
+  const errorEmail = document.getElementById("errorEmail");
   if (!rules.mail(email.value) || email.value === "") {
-    const errorEmail = document.getElementById("errorEmail");
-    checkErrorMail(errors.invalidMail, "text-control error-border", 1);
+    checking(errorEmail, errors.invalidMail, email, "text-control error-border");
+    errorSums["errorMail"] = 1;
   } else {
-    checkErrorMail("", "text-control", 0);
+    checking(errorEmail, "", email, "text-control");
+    errorSums["errorMail"] = 0;
   }
 };
 
 // Checking birthdate input
-function checkErrorBirthdate(textContent, className, dateError) {
-  errorBirthdate.textContent = textContent;
-  birthdate.className = className;
-  errorBirth = dateError;
-}
-let errorBirth = 0;
-
 function checkBirthdate() {
+  const errorBirthdate = document.getElementById("errorBirthdate");
   if (!rules.birthdate(birthdate.value)) {
-    const errorBirthdate = document.getElementById("errorBirthdate");
-    checkErrorBirthdate(errors.invalidDate, "text-control error-border", 1);
+    checking(errorBirthdate, errors.invalidDate, birthdate, "text-control error-border");
+    errorSums["errorBirth"] = 1;
   } else {
-    checkErrorBirthdate("", "text-control", 0);
+    checking(errorBirthdate, "", birthdate, "text-control");
+    errorSums["errorBirth"] = 0;
   }
 };
 
-// Checking the number of participations
-function checkErrorQuantity(textContent, className, quantityError) {
-  errorQuantity.textContent = textContent;
-  quantity.className = className;
-  errorParticipations = quantityError;
-}
-
-let errorParticipations = 0;
-
+// Checking number of participations input
 function checkParticipations() {
   if (!rules.quantity(quantity.value) || quantity.value === "") {
-    checkErrorQuantity(errors.invalidQuantity, "text-control error-border", 1);
+    checking(errorQuantity, errors.invalidQuantity, quantity, "text-control error-border");
+    errorSums["errorParticipations"] = 1;
   } else {
-    checkErrorQuantity("", "text-control", 0);
+    checking(errorQuantity, "", quantity, "text-control");
+    errorSums["errorParticipations"] = 0;
   }
 };
 
@@ -182,13 +171,8 @@ quantity.addEventListener("focusout", () => {
   checkParticipations();
 });
 
-// Checking the city choice
-function checkErrorCity(textContent, cityError) {
-  errorCity.textContent = textContent;
-  errorCities = cityError;
-}
-
-let errorCities = 0;
+// Checking city input
+const errorCity = document.getElementById("errorCity");
 
 function checkCity() {
   let valid = false;
@@ -199,35 +183,29 @@ function checkCity() {
   }
 
   if (valid) {
-    const errorCity = document.getElementById("errorCity");
-    checkErrorCity("", 0);
+    errorCity.textContent = "";
+    errorSums["errorCities"] = 0;
   } else {
-    checkErrorCity(errors.invalidCity, 1);
+    errorCity.textContent = errors.invalidCity;
+    errorSums["errorCities"] = 1;
   }
 };
 
 cities.forEach((btn) =>
   btn.addEventListener("change", () => {
     const checkedButtons = document.querySelector("input[name='location']:checked");
-    if (checkedButtons !== null) {
-      const errorCity = document.getElementById("errorCity");
-      errorCity.textContent = "";
-    } else {
-      errorCity.textContent = errors.invalidCity;
-    }
+    this.checkedButtons !== null ? (errorCity.textContent = "") : (errorCity.textContent = errors.invalidCity);
   })
 );
 
 // Checking checkbox GTU input
-let errorCheck = 0;
-
 function checkGtu() {
   if (checkboxGtu.checked === false) {
     checkboxEmpty.innerHTML = errors.invalidGtu;
-    errorCheck = 1;
+    errorSums["errorCheck"] = 1;
   } else {
     checkboxEmpty.textContent = "";
-    errorCheck = 0;
+    errorSums["errorCheck"] = 0;
   }
 };
 
@@ -244,7 +222,7 @@ modalSubmitBtn.addEventListener("click", (e) => {
   checkCity();
   checkGtu();
   e.preventDefault();
-  if (errorFirst + errorLast + errorMail + errorBirth + errorParticipations + errorCities + errorCheck === 0) {
+  if (Object.values(errorSums).reduce((accumulator, value) => { return accumulator + value; }) === 0) {
     form.style.display = "none";
     validationModal.className = "validation-block";
     modalBody.classList.add("validation");
