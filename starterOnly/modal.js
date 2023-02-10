@@ -92,51 +92,43 @@ inputs.forEach((input) => {
   });
 });
 
-function checking(errorType, textContent, classType, className) {
+function checking(errorType, textContent, classType, className, errorCount, error) {
   errorType.textContent = textContent;
   classType.className = className;
-  //errorCount = error;
+  errorSums[`${errorCount}`] = error;
 }
 
 // Checking firstname input
 function checkFirstname() {
   const errorFirstName = document.getElementById("errorFirstName");
-  if (!rules.name(first.value) && first.value !== "") {
-    checking(errorFirstName, errors.invalidFirst, first, "text-control error-border");
-    errorSums["errorFirst"] = 1;
+  if (!rules.name(first.value) && !!first.value) {
+    checking(errorFirstName, errors.invalidFirst, first, "text-control error-border", "errorFirst", 1);
   } else if (!rules.minChart(first.value)) {
-    checking(errorFirstName, errors.minFirstLetters, first, "text-control error-border");
-    errorSums["errorFirst"] = 1;
+    checking(errorFirstName, errors.minFirstLetters, first, "text-control error-border", "errorFirst", 1);
   } else {
-    checking(errorFirstName, "", first, "text-control");
-    errorSums["errorFirst"] = 0;
+    checking(errorFirstName, "", first, "text-control", "errorFirst", 0);
   }
 };
 
 // Checking Lastname input
 function checkLastname() {
   const errorLastName = document.getElementById("errorLastName");
-  if (!rules.name(last.value) && last.value !== "") {
-    checking(errorLastName, errors.invalidLast, last, "text-control error-border");
-    errorSums["errorLast"] = 1;
+  if (!rules.name(last.value) && !!last.value) {
+    checking(errorLastName, errors.invalidLast, last, "text-control error-border", "errorLast", 1);
   } else if (!rules.minChart(last.value)) {
-    checking(errorLastName, errors.minLastLetters, last, "text-control error-border");
-    errorSums["errorLast"] = 1;
+    checking(errorLastName, errors.minLastLetters, last, "text-control error-border", "errorLast", 1);
   } else {
-    checking(errorLastName, "", last, "text-control");
-    errorSums["errorLast"] = 0;
+    checking(errorLastName, "", last, "text-control", "errorLast", 0);
   }
 };
 
 // Checking Email input
 function checkMail() {
   const errorEmail = document.getElementById("errorEmail");
-  if (!rules.mail(email.value) || email.value === "") {
-    checking(errorEmail, errors.invalidMail, email, "text-control error-border");
-    errorSums["errorMail"] = 1;
+  if (!rules.mail(email.value) || !email.value) {
+    checking(errorEmail, errors.invalidMail, email, "text-control error-border", "errorMail", 1);
   } else {
-    checking(errorEmail, "", email, "text-control");
-    errorSums["errorMail"] = 0;
+    checking(errorEmail, "", email, "text-control", "errorMail", 0);
   }
 };
 
@@ -144,22 +136,18 @@ function checkMail() {
 function checkBirthdate() {
   const errorBirthdate = document.getElementById("errorBirthdate");
   if (!rules.birthdate(birthdate.value)) {
-    checking(errorBirthdate, errors.invalidDate, birthdate, "text-control error-border");
-    errorSums["errorBirth"] = 1;
+    checking(errorBirthdate, errors.invalidDate, birthdate, "text-control error-border", "errorBirth", 1);
   } else {
-    checking(errorBirthdate, "", birthdate, "text-control");
-    errorSums["errorBirth"] = 0;
+    checking(errorBirthdate, "", birthdate, "text-control", "errorBirth", 0);
   }
 };
 
 // Checking number of participations input
 function checkParticipations() {
-  if (!rules.quantity(quantity.value) || quantity.value === "") {
-    checking(errorQuantity, errors.invalidQuantity, quantity, "text-control error-border");
-    errorSums["errorParticipations"] = 1;
+  if (!rules.quantity(quantity.value) || !quantity.value) {
+    checking(errorQuantity, errors.invalidQuantity, quantity, "text-control error-border", "errorParticipations", 1);
   } else {
-    checking(errorQuantity, "", quantity, "text-control");
-    errorSums["errorParticipations"] = 0;
+    checking(errorQuantity, "", quantity, "text-control", "errorParticipations", 0);
   }
 };
 
