@@ -1,4 +1,4 @@
-// Navbar Header
+/** Navbar Header **/
 function editNav() {
   var x = document.getElementById("myTopnav");
   if (x.className === "topnav") {
@@ -8,7 +8,7 @@ function editNav() {
   }
 }
 
-// DOM Elements
+/** DOM Elements **/
 const modalbg = document.querySelector(".bground");
 const modalBtn = document.querySelectorAll(".modal-btn");
 const formData = document.querySelectorAll(".formData");
@@ -29,18 +29,22 @@ const modalBody = document.querySelector(".modal-body");
 const validClose = document.getElementById("validation-close");
 const modalSubmitBtn = document.querySelector(".btn-submit");
 
-// launch modal
+/** launch modal **/
 modalBtn.forEach((btn) =>
   btn.addEventListener("click", () => {
     modalbg.style.display = "block";
   })
 );
 
-// close modal
+/** close modal **/
 modalCloseBtn[0].addEventListener("click", () => {
   modalbg.style.display = "none";
 });
 
+/** Error count Object
+ *
+ * > Sum of errors in a function
+ **/
 const errorSums = {
   "errorFirst": 0,
   "errorLast": 0,
@@ -51,7 +55,7 @@ const errorSums = {
   "errorCheck": 0
 }
 
-// Error messages Object
+/** Error messages Object **/
 const errors = {
   invalidFirst: "Le prénom ne doit comporter que des lettres ou des tirets.",
   minFirstLetters: "Veuillez entrer 2 caractères ou plus pour le champ du prénom.",
@@ -64,7 +68,7 @@ const errors = {
   invalidGtu: "<br>Vous devez acceptez les termes et conditions pour participer.",
 };
 
-// Checking inputs with regex
+/** Regex Object **/
 const rules = {
   birthdate: (v) => /^((19[3-9]+[0-9]|200[0-9])-(0?[1-9]|1[0-2])-(0?[1-9]|[12]\d|3[01])|(0?[1-9]|[12]\d|3[01])[/](0?[1-9]|1[0-2])[/](19[3-9]+[0-9]|200[0-6]))$/.test(v),
   name: (v) => /^[a-zA-Z\-éëàèìòùÀÈÌÒÙáéíóúýÁÉÍÓÚÝâêîôûÂÊÎÔÛãñõÃÑÕäëïöüÿÄËÏÖÜŸçÇÆæœ]{1,}$/.test(v),
@@ -73,6 +77,7 @@ const rules = {
   quantity: (v) => /^[0-9]*$/.test(v)
 };
 
+/** Inputs Object to check instantly when writting in the field **/
 const inputs = [
   { elementId: "first", checkFunction: checkFirstname },
   { elementId: "last", checkFunction: checkLastname },
@@ -80,9 +85,9 @@ const inputs = [
   { elementId: "birthdate", checkFunction: checkBirthdate }
 ]
 
+/** methods to check instantly when writting in the field **/
 inputs.forEach((input) => {
   const element = document.getElementById(input.elementId);
-  //--- methods to check instantly during writting in the field
   element.oninput = () => {
     input.checkFunction();
   };
@@ -92,13 +97,22 @@ inputs.forEach((input) => {
   });
 });
 
+/** Global function to use for the checking conditions
+ *
+ * errorType = HTML tag where the error will be display
+ * textContent = content to display at the HTML tag
+ * classType = input where the CSS will be add
+ * className = CSS class(es) to add
+ * errorCount = name of the errorCount of the function
+ * error = number (1 = error ; 0 = no error)
+ */
 function checking(errorType, textContent, classType, className, errorCount, error) {
   errorType.textContent = textContent;
   classType.className = className;
   errorSums[`${errorCount}`] = error;
 }
 
-// Checking firstname input
+/**  Checking firstname input **/
 function checkFirstname() {
   const errorFirstName = document.getElementById("errorFirstName");
   if (!rules.name(first.value) && !!first.value) {
@@ -110,7 +124,7 @@ function checkFirstname() {
   }
 };
 
-// Checking Lastname input
+/** Checking Lastname input **/
 function checkLastname() {
   const errorLastName = document.getElementById("errorLastName");
   if (!rules.name(last.value) && !!last.value) {
@@ -122,7 +136,7 @@ function checkLastname() {
   }
 };
 
-// Checking Email input
+/**  Checking Email input **/
 function checkMail() {
   const errorEmail = document.getElementById("errorEmail");
   if (!rules.mail(email.value) || !email.value) {
@@ -132,7 +146,7 @@ function checkMail() {
   }
 };
 
-// Checking birthdate input
+/** Checking birthdate input */
 function checkBirthdate() {
   const errorBirthdate = document.getElementById("errorBirthdate");
   if (!rules.birthdate(birthdate.value)) {
@@ -142,7 +156,7 @@ function checkBirthdate() {
   }
 };
 
-// Checking number of participations input
+/** Checking number of participations input **/
 function checkParticipations() {
   if (!rules.quantity(quantity.value) || !quantity.value) {
     checking(errorQuantity, errors.invalidQuantity, quantity, "text-control error-border", "errorParticipations", 1);
@@ -151,6 +165,7 @@ function checkParticipations() {
   }
 };
 
+/** methods to check instantly when writting in the field **/
 quantity.onchange = () => {
   checkParticipations();
 };
@@ -159,9 +174,8 @@ quantity.addEventListener("focusout", () => {
   checkParticipations();
 });
 
-// Checking city input
+/** Checking city input **/
 const errorCity = document.getElementById("errorCity");
-
 function checkCity() {
   let valid = false;
   for (let i = 0; i < cities.length; i++) {
@@ -179,6 +193,7 @@ function checkCity() {
   }
 };
 
+/** methods to check instantly when clicking on a radio button **/
 cities.forEach((btn) =>
   btn.addEventListener("change", () => {
     const checkedButtons = document.querySelector("input[name='location']:checked");
@@ -186,7 +201,7 @@ cities.forEach((btn) =>
   })
 );
 
-// Checking checkbox GTU input
+/** Checking checkbox GTU input **/
 function checkGtu() {
   if (checkboxGtu.checked === false) {
     checkboxEmpty.innerHTML = errors.invalidGtu;
@@ -197,12 +212,14 @@ function checkGtu() {
   }
 };
 
+/** methods to check instantly when clicking on the checkbox **/
 checkboxGtu.addEventListener("change", function () {
   this.checked ? (checkboxEmpty.textContent = "") : (checkboxEmpty.innerHTML = errors.invalidGtu);
 });
 
+/** Checking that there is no errors detected **/
 modalSubmitBtn.addEventListener("click", (e) => {
-// Checking that there is no errors detected
+  /** checking each function */
   inputs.forEach((input) => {
     input.checkFunction();
   })
@@ -210,6 +227,7 @@ modalSubmitBtn.addEventListener("click", (e) => {
   checkCity();
   checkGtu();
   e.preventDefault();
+  /** sum all the errorSum results (valid if strictly equal to 0) */
   if (Object.values(errorSums).reduce((accumulator, value) => { return accumulator + value; }) === 0) {
     form.style.display = "none";
     validationModal.className = "validation-block";
@@ -217,7 +235,7 @@ modalSubmitBtn.addEventListener("click", (e) => {
   }
 });
 
-// Submitting form
+/** Submitting form **/
 document.querySelector(".btn-close-form").addEventListener("click", () => {
   form.submit();
 });

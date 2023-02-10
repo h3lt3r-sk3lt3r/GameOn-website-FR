@@ -31,6 +31,8 @@ img {
   padding-right: 1rem;
 }
 
+/* Navbar style */
+
 .topnav {
   overflow: hidden;
   margin: 3.5%;
@@ -84,6 +86,8 @@ main {
   display: none;
 }
 
+/* Tablet responsive navbar */
+
 @media screen and (max-width: 1100px) {
   .topnav {
     position: relative;
@@ -132,7 +136,9 @@ main {
   }
 }
 
- @media screen and (max-width: 540px) {
+/* Mobile responsive Navbar  */
+
+@media screen and (max-width: 540px) {
   .topnav a {
     display: none;
   }
@@ -250,6 +256,8 @@ input {
   height: 48px;
 }
 
+/* Checkbox and radiobutton designs */
+
 .checkbox-label,
 .radio-label {
   position: relative;
@@ -330,6 +338,8 @@ input {
   font-weight: bold;
 }
 
+/* Close 'button' */
+
 .close {
   position: absolute;
   right: 15px;
@@ -358,6 +368,8 @@ input {
 .close:after {
   transform: rotate(-45deg);
 }
+
+/* Buttons style */
 
 .btn-submit,
 .btn-close-form,
@@ -429,8 +441,6 @@ input {
   height: 48px;
 }
 
-/* Style items (options): */
-
 .select-items {
   position: absolute;
   background-color: #fff;
@@ -440,13 +450,11 @@ input {
   z-index: 99;
 }
 
-
 .select-items div:hover,
 .same-as-selected {
   background-color: rgba(0, 0, 0, 0.1);
 }
 
-/* custom select end */
 .text-label {
   font-weight: normal;
   font-size: 16px;
