@@ -62,7 +62,7 @@ const errors = {
   invalidLast: "Le nom ne doit comporter que des lettres ou des tirets.",
   minLastLetters: "Veuillez entrer 2 caractères ou plus pour le champ du nom.",
   invalidMail: "L'adresse email n'est pas valide.",
-  invalidDate: "La date de naissance renseignée n'est pas valide.",
+  invalidDate: "La date de naissance renseignée n'est pas valide (age minimum : 14 ans).",
   invalidQuantity: "Veuillez renseigner votre nombre de participation.",
   invalidCity: "Vous devez choisir une ville.",
   invalidGtu: "<br>Vous devez acceptez les termes et conditions pour participer.",
@@ -73,7 +73,7 @@ const rules = {
   birthdate: (v) => /^((19[3-9]+[0-9]|200[0-9])-(0?[1-9]|1[0-2])-(0?[1-9]|[12]\d|3[01])|(0?[1-9]|[12]\d|3[01])[/](0?[1-9]|1[0-2])[/](19[3-9]+[0-9]|200[0-6]))$/.test(v),
   name: (v) => /^[a-zA-Z\-éëàèìòùÀÈÌÒÙáéíóúýÁÉÍÓÚÝâêîôûÂÊÎÔÛãñõÃÑÕäëïöüÿÄËÏÖÜŸçÇÆæœ]{1,}$/.test(v),
   mail: (v) => /^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/.test(v),
-  minChart: (v) => !!v && v.length >= 2,
+  minChart: (v) => v && v.length >= 2,
   quantity: (v) => /^[0-9]*$/.test(v)
 };
 
@@ -82,7 +82,8 @@ const inputs = [
   { elementId: "first", checkFunction: checkFirstname },
   { elementId: "last", checkFunction: checkLastname },
   { elementId: "email", checkFunction: checkMail },
-  { elementId: "birthdate", checkFunction: checkBirthdate }
+  { elementId: "birthdate", checkFunction: checkBirthdate },
+  { elementId: "quantity", checkFunction: checkParticipations }
 ]
 
 /** methods to check instantly when writting in the field **/
@@ -109,7 +110,7 @@ inputs.forEach((input) => {
 function checking(errorType, textContent, classType, className, errorCount, error) {
   errorType.textContent = textContent;
   classType.className = className;
-  errorSums[`${errorCount}`] = error;
+  errorSums[errorCount] = error;
 }
 
 /**  Checking firstname input **/
@@ -165,15 +166,6 @@ function checkParticipations() {
   }
 };
 
-/** methods to check instantly when writting in the field **/
-quantity.onchange = () => {
-  checkParticipations();
-};
-
-quantity.addEventListener("focusout", () => {
-  checkParticipations();
-});
-
 /** Checking city input **/
 const errorCity = document.getElementById("errorCity");
 function checkCity() {
@@ -223,7 +215,6 @@ modalSubmitBtn.addEventListener("click", (e) => {
   inputs.forEach((input) => {
     input.checkFunction();
   })
-  checkParticipations();
   checkCity();
   checkGtu();
   e.preventDefault();
